@@ -1,11 +1,9 @@
 #![feature(fs_try_exists)]
 
-use dirs::{data_dir, data_local_dir};
-use pico_args;
+use dirs::data_local_dir;
 
-use std::ffi::{OsStr, OsString};
 use std::fs;
-use std::io::{BufReader, Read, Write};
+use std::io::{Read, Write};
 use std::os::unix::prelude::CommandExt;
 use std::path::PathBuf;
 use std::{env, process};
@@ -19,7 +17,7 @@ fn main() {
 
     if args.contains(["-e", "--edit"]) {
         let editor = env::var("EDITOR").unwrap_or_else(|_| "vim".to_string());
-        let error = process::Command::new(editor.clone()).arg(notes_path).exec();
+        let error = process::Command::new(editor).arg(notes_path).exec();
         panic!("{}", error);
     }
 
