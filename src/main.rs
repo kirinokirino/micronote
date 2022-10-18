@@ -21,6 +21,16 @@ fn main() {
         panic!("{}", error);
     }
 
+    if args.contains(["-h", "--help"]) {
+    	println!("{}", HELP);
+    	process::exit(0);
+    }
+
+    if args.contains(["-f", "--file"]) {
+    	println!("{}", notes_path.display());
+    	process::exit(0);
+    }
+
     let mut notes_file = fs::OpenOptions::new()
         .append(true)
         .create(true)
@@ -48,3 +58,10 @@ fn main() {
         assert!(result.is_ok());
     }
 }
+
+static HELP: &str = "Usage:
+  micronote 				Print notes
+  micronote	<note text> 	Save note text
+  micronote -f 				Print notes file path
+  micronote -e 				Opens notes file in the editor
+  micronote -h  			Print this help text";
