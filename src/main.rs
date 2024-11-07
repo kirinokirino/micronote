@@ -1,5 +1,3 @@
-#![feature(fs_try_exists)]
-
 use dirs::data_local_dir;
 
 use std::fs;
@@ -10,7 +8,7 @@ use std::{env, process};
 
 fn main() {
     let dir = data_local_dir().unwrap_or_else(|| PathBuf::from("/home/k/.local/share"));
-    assert!(fs::try_exists(dir.clone()).is_ok());
+    assert!(dir.clone().try_exists().is_ok());
     let notes_path = dir.join("notes");
 
     let mut args = pico_args::Arguments::from_env();
@@ -22,13 +20,13 @@ fn main() {
     }
 
     if args.contains(["-h", "--help"]) {
-    	println!("{}", HELP);
-    	process::exit(0);
+        println!("{}", HELP);
+        process::exit(0);
     }
 
     if args.contains(["-f", "--file"]) {
-    	println!("{}", notes_path.display());
-    	process::exit(0);
+        println!("{}", notes_path.display());
+        process::exit(0);
     }
 
     let mut notes_file = fs::OpenOptions::new()
